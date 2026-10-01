@@ -1,0 +1,39 @@
+name: Actualizar Elo/yElo
+
+on:
+  schedule:
+    # Cada 3 horas. TennisAbstract recalcula tras cada partido, asi que mas
+    # frecuente no aporta nada -- los partidos tardan bastante mas que eso.
+    - cron: '17 */3 * * *'
+  workflow_dispatch: {}   # boton manual "Run workflow" en la pestaña Actions
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+
+      - name: Descargar Elo/yElo
+        run: node scripts/update_elo.js
+
+      - name: Comitear si hay cambios
+        run: |
+          git config user.name "overedge-bot"
+          git config user.email "overedge-bot@users.noreply.github.com"
+          if git diff --quiet -- data/; then
+            echo "Sin cambios, nada que comitear."
+          else
+            git add data/
+            git commit -m "Actualizar Elo/yElo ($(date -u +%Y-%m-%dT%H:%MZ))"
+            git push
+          fi
