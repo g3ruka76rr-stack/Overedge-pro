@@ -1,11 +1,11 @@
 name: Actualizar Elo/yElo
 
 on:
-  schedule:
-    # Cada 3 horas. TennisAbstract recalcula tras cada partido, asi que mas
-    # frecuente no aporta nada -- los partidos tardan bastante mas que eso.
-    - cron: '17 */3 * * *'
-  workflow_dispatch: {}   # boton manual "Run workflow" en la pestaña Actions
+  # Desactivado el cron automatico: TennisAbstract bloquea las peticiones que
+  # vienen de los servidores de GitHub Actions (proteccion Cloudflare), asi
+  # que programado siempre fallaria. El Elo/yElo se actualiza ahora subiendo
+  # a mano los 4 JSON de /data (ver README.md).
+  workflow_dispatch: {}   # boton manual "Run workflow" en la pestaña Actions, por si se quiere reintentar algun dia
 
 permissions:
   contents: write
