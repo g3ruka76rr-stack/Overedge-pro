@@ -1,0 +1,12 @@
+{
+  "name": "overedge-pro-elo-updater",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Descarga automatica de Elo/yElo (TennisAbstract) para OverEdge Pro",
+  "scripts": {
+    "update-elo": "node scripts/update_elo.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}
